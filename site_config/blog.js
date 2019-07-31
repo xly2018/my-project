@@ -59,11 +59,11 @@ export default {
     postsTitle: '所有文章',
     list: [
       {
-        title: '第一篇博客',
-        author: 'author1',
+        title: 'jquery ContextMenu',
+        author: 'xly',
         dateStr: 'May 12nd，2018',
-        desc: '博客描述，总结博客的主体内容',
-        link: '/zh-cn/blog/blog1.html',
+        desc: '右击菜单',
+        link: '/zh-cn/blog/jquery ContextMenu.html',
       },
       {
         title: '第二篇博客',
