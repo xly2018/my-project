@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="keywords" content="pdf导出" />
+	<meta name="description" content="pdf导出" />
+	<!-- 网页标签标题 -->
+	<title>freemaker+itext pdf导出网页</title>
+	<link rel="shortcut icon" href="/img/docsite.ico"/>
+	<link rel="stylesheet" href="/build/blogDetail.css" />
+</head>
+<body>
+	<div id="root"><div class="blog-detail-page" data-reactroot=""><header class="header-container header-container-normal"><div class="header-body"><a href="/zh-cn/index.html"><img class="logo" src="/img/dubbo_colorful.png"/></a><div class="search search-normal"><span class="icon-search"></span></div><span class="language-switch language-switch-normal">En</span><div class="header-menu"><img class="header-menu-toggle" src="/img/system/menu_gray.png"/><ul><li class="menu-item menu-item-normal"><a href="/zh-cn/index.html" target="_self">首页</a></li><li class="menu-item menu-item-normal"><a href="/zh-cn/docs/demo1.html" target="_self">文档</a></li><li class="menu-item menu-item-normal menu-item-normal-active"><a href="/zh-cn/blog/index.html" target="_self">博客</a></li><li class="menu-item menu-item-normal"><a href="/zh-cn/community/index.html" target="_self">社区</a></li></ul></div></div></header><section class="blog-content markdown-body"><h3>添加maven依赖</h3>
+<pre><code class="language-xml">   <span class="hljs-comment">&lt;!-- pdfHTML --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.itextpdf<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>html2pdf<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- add all iText 7 Community modules --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.itextpdf<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>itext7-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>7.0.5<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- freemarker engine --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.freemarker<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>freemarker<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3.28<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre>
+<h3>freemaker根据模板生成html</h3>
+<p><code>FreeMarkerUtils.htmHandler(templatePath, templateName, htmlUrl, map);</code></p>
+<pre><code class="language-java">  <span class="hljs-comment">/**
+     * <span class="hljs-doctag">@param</span> templatePath 模板路径
+     * <span class="hljs-doctag">@param</span> templateName 模板名称
+     * <span class="hljs-doctag">@param</span> htmUrl       html页面全路径
+     * <span class="hljs-doctag">@param</span> paramMap     渲染ftl的数据模型
+     * <span class="hljs-doctag">@throws</span> Exception
+     * <span class="hljs-doctag">@author</span> xly
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">htmHandler</span><span class="hljs-params">(String templatePath, String templateName,
+                                  String htmUrl, Map&lt;String, Object&gt; paramMap)</span> <span class="hljs-keyword">throws</span> Exception </span>{
+        Configuration cfg = <span class="hljs-keyword">new</span> Configuration(Configuration.VERSION_2_3_28);
+        <span class="hljs-comment">//设置字符编码</span>
+        cfg.setDefaultEncoding(<span class="hljs-string">"UTF-8"</span>);
+        <span class="hljs-comment">//设置模板加载路径</span>
+        cfg.setDirectoryForTemplateLoading(<span class="hljs-keyword">new</span> File(templatePath));
+        <span class="hljs-comment">//获取模板</span>
+        Template template = cfg.getTemplate(templateName);
+        <span class="hljs-comment">//构建html文件</span>
+        File outHtmFile = <span class="hljs-keyword">new</span> File(htmUrl);
+        <span class="hljs-comment">//写出html文件</span>
+        Writer out = <span class="hljs-keyword">new</span> BufferedWriter(<span class="hljs-keyword">new</span> OutputStreamWriter(
+                <span class="hljs-keyword">new</span> FileOutputStream(outHtmFile), <span class="hljs-string">"UTF-8"</span>));
+        template.process(paramMap, out);
+
+        out.close();
+    }
+</code></pre>
+<h3>html2pdf</h3>
+<pre><code class="language-java">    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">html2pdf</span><span class="hljs-params">(String htmlUrl, String pdfName)</span> <span class="hljs-keyword">throws</span> IOException </span>{
+        File htmlSource = <span class="hljs-keyword">new</span> File(htmlUrl);
+        FileInputStream inputStream = <span class="hljs-keyword">new</span> FileInputStream(htmlSource);
+        String pdfPath = FreeMarkerUtils.getTemplatePath(<span class="hljs-string">"pdf"</span>);
+        FileUtils.createDirectory(pdfPath);
+        <span class="hljs-comment">//声明输出流</span>
+        FileOutputStream fileOutputStream = <span class="hljs-keyword">new</span> FileOutputStream(pdfPath + pdfName + <span class="hljs-string">".pdf"</span>);
+        <span class="hljs-comment">//写入流信息</span>
+        fileOutputStream.write(Html2PdfUtil.convert(inputStream));
+        fileOutputStream.close();
+    }
+</code></pre>
+<h3>压缩文件夹打包zip导出</h3>
+<pre><code class="language-java">	<span class="hljs-comment">/**
+	 * 压缩成ZIP 方法1
+	 * <span class="hljs-doctag">@author</span> xly
+	 * <span class="hljs-doctag">@param</span> srcDir           压缩文件夹路径
+	 * <span class="hljs-doctag">@param</span> out              压缩文件输出流
+	 * <span class="hljs-doctag">@param</span> KeepDirStructure 是否保留原来的目录结构,true:保留目录结构;
+	 *                         false:所有文件跑到压缩包根目录下(注意：不保留目录结构可能会出现同名文件,会压缩失败)
+	 * <span class="hljs-doctag">@throws</span> RuntimeException 压缩失败会抛出运行时异常
+	 */</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">toZip</span><span class="hljs-params">(String srcDir, OutputStream out, <span class="hljs-keyword">boolean</span> KeepDirStructure)</span>
+			<span class="hljs-keyword">throws</span> RuntimeException </span>{
+
+		<span class="hljs-keyword">long</span> start = System.currentTimeMillis();
+		ZipOutputStream zos = <span class="hljs-keyword">null</span>;
+		<span class="hljs-keyword">try</span> {
+			zos = <span class="hljs-keyword">new</span> ZipOutputStream(out);
+			File sourceFile = <span class="hljs-keyword">new</span> File(srcDir);
+			compress(sourceFile, zos, sourceFile.getName(), KeepDirStructure);
+			<span class="hljs-keyword">long</span> end = System.currentTimeMillis();
+			System.out.println(<span class="hljs-string">"压缩完成，耗时："</span> + (end - start) + <span class="hljs-string">" ms"</span>);
+		} <span class="hljs-keyword">catch</span> (Exception e) {
+			<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">"zip error from ZipUtils"</span>, e);
+		} <span class="hljs-keyword">finally</span> {
+			<span class="hljs-keyword">if</span> (zos != <span class="hljs-keyword">null</span>) {
+				<span class="hljs-keyword">try</span> {
+					zos.close();
+				} <span class="hljs-keyword">catch</span> (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+</code></pre>
+<h3>前端导出进度展示</h3>
+<p>html 页面</p>
+<pre><code class="language-html"> <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"${ctxStatic}/components/jquery-circliful/css/jquery.circliful.css"</span>/&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"${ctxStatic}/components/jquery-circliful/js/jquery.circliful.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  
+  
+  <span class="hljs-comment">&lt;!-- Mask是遮罩，Progress是进度条 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"Mask"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"Progress"</span> <span class="hljs-attr">data-dimension</span>=<span class="hljs-string">"200"</span> <span class="hljs-attr">data-text</span>=<span class="hljs-string">"0%"</span> <span class="hljs-attr">data-info</span>=<span class="hljs-string">"导出进度"</span> <span class="hljs-attr">data-width</span>=<span class="hljs-string">"15"</span> <span class="hljs-attr">data-fontsize</span>=<span class="hljs-string">"30"</span>
+         <span class="hljs-attr">data-percent</span>=<span class="hljs-string">"0"</span> <span class="hljs-attr">data-fgcolor</span>=<span class="hljs-string">"##6633CC"</span> <span class="hljs-attr">data-bgcolor</span>=<span class="hljs-string">"#eee"</span> <span class="hljs-attr">data-fill</span>=<span class="hljs-string">"#ddd"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+<p>js</p>
+<pre><code class="language-js">jseasyui.exam.examperiod.main.count;
+jseasyui.exam.examperiod.main.batchDownload = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">//校验</span>
+    <span class="hljs-keyword">var</span> schoolYear = $(<span class="hljs-string">'#schoolYear'</span>).val();
+    <span class="hljs-keyword">var</span> schoolTerm = $(<span class="hljs-string">'#schoolTerm'</span>).val();
+    <span class="hljs-keyword">var</span> examType = $(<span class="hljs-string">'#testType'</span>).val();
+    <span class="hljs-keyword">if</span> (schoolYear == <span class="hljs-string">''</span>) {
+        jseasyui.tips(<span class="hljs-string">'提示'</span>, <span class="hljs-string">"请选择学年！"</span>, <span class="hljs-number">5</span>);
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span> (schoolTerm == <span class="hljs-string">''</span>) {
+        jseasyui.tips(<span class="hljs-string">'提示'</span>, <span class="hljs-string">"请选择学期！"</span>, <span class="hljs-number">5</span>);
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span> (examType == <span class="hljs-string">''</span>) {
+        jseasyui.tips(<span class="hljs-string">'提示'</span>, <span class="hljs-string">"请选择考试类型！"</span>, <span class="hljs-number">5</span>);
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">var</span> param = {
+        <span class="hljs-attr">schoolYear</span>: schoolYear,
+        <span class="hljs-attr">schoolTerm</span>: schoolTerm,
+        <span class="hljs-attr">examType</span>: examType
+    };
+    <span class="hljs-keyword">var</span> asyncParam = {
+        <span class="hljs-attr">async</span>: <span class="hljs-literal">false</span>
+    };
+    <span class="hljs-keyword">var</span> count;
+    jseasyui.ajaxJson(<span class="hljs-string">'excel/getTotalCount'</span>, param, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+        count = data.data;
+    }, asyncParam);
+    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) {
+        jseasyui.tips(<span class="hljs-string">'提示'</span>, <span class="hljs-string">"没有找到数据！"</span>, <span class="hljs-number">5</span>);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">//导出</span>
+        <span class="hljs-built_in">window</span>.location.href = <span class="hljs-string">'excel/exportZip?schoolYear='</span> + schoolYear + <span class="hljs-string">'&amp;schoolTerm='</span> + schoolTerm + <span class="hljs-string">'&amp;examType='</span> + examType;
+        <span class="hljs-comment">/*** 进度条的显示  */</span>
+        jseasyui.exam.examperiod.main.showProgress();
+        jseasyui.exam.examperiod.main.timer();
+        isFirstExport = <span class="hljs-literal">false</span>;
+    }
+}
+<span class="hljs-comment">/**
+ * 定时器 刷新进度
+ */</span>
+jseasyui.exam.examperiod.main.timer = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">window</span>.setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">var</span> timer = <span class="hljs-built_in">window</span>.setInterval(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            jseasyui.ajaxJson(<span class="hljs-string">'excel/flushProgress'</span>, {}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+                $(<span class="hljs-string">"#Progress .circle-text"</span>).text(data.data.percentText);
+                $(<span class="hljs-string">"#Progress .circle-info"</span>).text(<span class="hljs-string">"导出进度:"</span> + data.data.curCount + <span class="hljs-string">"/"</span> + data.data.totalCount);
+                <span class="hljs-keyword">if</span> (data.data.percent == <span class="hljs-string">"100"</span>) {
+                    <span class="hljs-built_in">window</span>.clearInterval(timer);
+                    jseasyui.exam.examperiod.main.hideProgress();
+                }
+            })
+        }, <span class="hljs-number">800</span>);
+    }, <span class="hljs-number">800</span>);
+}
+<span class="hljs-comment">//显示进度条</span>
+<span class="hljs-keyword">var</span> isFirstExport = <span class="hljs-literal">true</span>;
+jseasyui.exam.examperiod.main.showProgress = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    $(<span class="hljs-string">"#Mask"</span>).css(<span class="hljs-string">"height"</span>, $(<span class="hljs-built_in">document</span>).height());
+    $(<span class="hljs-string">"#Mask"</span>).css(<span class="hljs-string">"width"</span>, $(<span class="hljs-built_in">document</span>).width());
+    $(<span class="hljs-string">"#Mask"</span>).show();
+    <span class="hljs-keyword">if</span> (isFirstExport) {
+        $(<span class="hljs-string">"#Progress"</span>).circliful();
+    } <span class="hljs-keyword">else</span> {
+        $(<span class="hljs-string">"#Progress .circle-text"</span>).text(<span class="hljs-string">"0%"</span>);
+        $(<span class="hljs-string">"#Progress .circle-info"</span>).text(<span class="hljs-string">"导出进度"</span>);
+        $(<span class="hljs-string">"#Progress"</span>).show();
+    }
+}
+<span class="hljs-comment">//隐藏进度条</span>
+jseasyui.exam.examperiod.main.hideProgress = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    $(<span class="hljs-string">"#Mask"</span>).hide();
+    $(<span class="hljs-string">"#Progress"</span>).hide();
+}
+</code></pre>
+<h3>效果</h3>
+<p><img src="https://xly2018.github.io/long/img/a6848d34.gif" alt=""></p>
+</section><footer class="footer-container"><div class="footer-body"><img src="/img/dubbo_gray.png"/><div class="cols-container"><div class="col col-12"><h3>免责声明</h3><p>免责声明的具体内容</p></div><div class="col col-6"><dl><dt>文档</dt><dd><a href="/zh-cn/docs/demo1.html" target="_self">概览</a></dd><dd><a href="/zh-cn/docs/demo2.html" target="_self">快速开始</a></dd><dd><a href="/zh-cn/docs/dir/demo3.html" target="_self">开发者指南</a></dd></dl></div><div class="col col-6"><dl><dt>资源</dt><dd><a href="/zh-cn/blog/index.html" target="_self">博客</a></dd><dd><a href="/zh-cn/community/index.html" target="_self">社区</a></dd></dl></div></div><div class="copyright"><span>Copyright © 2018 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span></div></div></footer></div></div>
+	<script src="https://f.alicdn.com/react/15.4.1/react-with-addons.min.js"></script>
+	<script src="https://f.alicdn.com/react/15.4.1/react-dom.min.js"></script>
+	<script>
+		window.rootPath = '';
+  </script>
+	<script src="/build/blogDetail.js"></script>
+</body>
+</html>

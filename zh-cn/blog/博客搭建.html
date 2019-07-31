@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="keywords" content="博客搭建" />
+	<meta name="description" content="博客搭建" />
+	<!-- 网页标签标题 -->
+	<title>Hexo+码云+git搭建个人博客</title>
+	<link rel="shortcut icon" href="/img/docsite.ico"/>
+	<link rel="stylesheet" href="/build/blogDetail.css" />
+</head>
+<body>
+	<div id="root"><div class="blog-detail-page" data-reactroot=""><header class="header-container header-container-normal"><div class="header-body"><a href="/zh-cn/index.html"><img class="logo" src="/img/dubbo_colorful.png"/></a><div class="search search-normal"><span class="icon-search"></span></div><span class="language-switch language-switch-normal">En</span><div class="header-menu"><img class="header-menu-toggle" src="/img/system/menu_gray.png"/><ul><li class="menu-item menu-item-normal"><a href="/zh-cn/index.html" target="_self">首页</a></li><li class="menu-item menu-item-normal"><a href="/zh-cn/docs/demo1.html" target="_self">文档</a></li><li class="menu-item menu-item-normal menu-item-normal-active"><a href="/zh-cn/blog/index.html" target="_self">博客</a></li><li class="menu-item menu-item-normal"><a href="/zh-cn/community/index.html" target="_self">社区</a></li></ul></div></div></header><section class="blog-content markdown-body"><h6>摘自</h6>
+<p><a href="https://my.oschina.net/ruowu/blog/1492038">最简单的使用Hexo+OSChina（码云）+git搭建自己的静态blog博客网站教程</a></p>
+<h5>准备工作</h5>
+<ol>
+<li><a href="https://nodejs.org/en/">下载安装node.js</a></li>
+<li><a href="http://rj.baidu.com/search/index/?kw=git">下载安装git</a></li>
+<li><a href="https://git.oschina.net/signup">注册（oschina）码云</a></li>
+<li><a href="https://hexo.io/zh-cn/docs/">安装Hexo框架</a></li>
+</ol>
+<h5>遇到的问题</h5>
+<p>具体的操作就不多说了网上教程很多,使用gitHub和码云都可以,<a href="http://xn--yourname-c49lo90cp33ars2dbgib00dyk3b9hbj7i.gitHub.io">项目名称不需要非得yourname.gitHub.io</a>。</p>
+<ul>
+<li>nodejs尽量选择6.0以上的版本,否则在使用hexo的时候会报错</li>
+<li>修改hexo的_config.yml配置</li>
+</ul>
+<pre><code class="language-js">  language: zh-CN
+</code></pre>
+<p>可将网站模板改为中文,更多配置参考<a href="https://hexo.io/zh-cn/docs/">hexo文档</a></p>
+<ul>
+<li>部署到git样式丢失的问题需要修改hexo的_config.yml</li>
+</ul>
+<pre><code class="language-js"> url:  网站的url  
+ root: /项目名
+</code></pre>
+<ul>
+<li>如果使用markdown 10 来编辑文章会出现 notitle的问题,我换了编辑器</li>
+</ul>
+<h5>hexo提交新增文章到git</h5>
+<pre><code class="language-shell">hexo g  
+hexo d
+</code></pre>
+<h5>hexo 图片</h5>
+<p>将图片放到public/img/ 文件下下面，然后</p>
+<pre><code class="language-js">使用项目路径+<span class="hljs-regexp">/img/</span>[文件名]
+</code></pre>
+<p>引入命令</p>
+<pre><code class="language-shell">![](图片url)
+</code></pre>
+<p>example<br>
+<img src="https://xly2018.github.io/long/img/lm.jpg" alt=""></p>
+<h5>结尾语</h5>
+<p>刚刚起步,还有诸多需要学习的地方,还望各位看官海涵！</p>
+</section><footer class="footer-container"><div class="footer-body"><img src="/img/dubbo_gray.png"/><div class="cols-container"><div class="col col-12"><h3>免责声明</h3><p>免责声明的具体内容</p></div><div class="col col-6"><dl><dt>文档</dt><dd><a href="/zh-cn/docs/demo1.html" target="_self">概览</a></dd><dd><a href="/zh-cn/docs/demo2.html" target="_self">快速开始</a></dd><dd><a href="/zh-cn/docs/dir/demo3.html" target="_self">开发者指南</a></dd></dl></div><div class="col col-6"><dl><dt>资源</dt><dd><a href="/zh-cn/blog/index.html" target="_self">博客</a></dd><dd><a href="/zh-cn/community/index.html" target="_self">社区</a></dd></dl></div></div><div class="copyright"><span>Copyright © 2018 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span></div></div></footer></div></div>
+	<script src="https://f.alicdn.com/react/15.4.1/react-with-addons.min.js"></script>
+	<script src="https://f.alicdn.com/react/15.4.1/react-dom.min.js"></script>
+	<script>
+		window.rootPath = '';
+  </script>
+	<script src="/build/blogDetail.js"></script>
+</body>
+</html>

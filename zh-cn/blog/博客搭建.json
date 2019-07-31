@@ -1,0 +1,13 @@
+{
+  "filename": "博客搭建.md",
+  "__html": "<h6>摘自</h6>\n<p><a href=\"https://my.oschina.net/ruowu/blog/1492038\">最简单的使用Hexo+OSChina（码云）+git搭建自己的静态blog博客网站教程</a></p>\n<h5>准备工作</h5>\n<ol>\n<li><a href=\"https://nodejs.org/en/\">下载安装node.js</a></li>\n<li><a href=\"http://rj.baidu.com/search/index/?kw=git\">下载安装git</a></li>\n<li><a href=\"https://git.oschina.net/signup\">注册（oschina）码云</a></li>\n<li><a href=\"https://hexo.io/zh-cn/docs/\">安装Hexo框架</a></li>\n</ol>\n<h5>遇到的问题</h5>\n<p>具体的操作就不多说了网上教程很多,使用gitHub和码云都可以,<a href=\"http://xn--yourname-c49lo90cp33ars2dbgib00dyk3b9hbj7i.gitHub.io\">项目名称不需要非得yourname.gitHub.io</a>。</p>\n<ul>\n<li>nodejs尽量选择6.0以上的版本,否则在使用hexo的时候会报错</li>\n<li>修改hexo的_config.yml配置</li>\n</ul>\n<pre><code class=\"language-js\">  language: zh-CN\n</code></pre>\n<p>可将网站模板改为中文,更多配置参考<a href=\"https://hexo.io/zh-cn/docs/\">hexo文档</a></p>\n<ul>\n<li>部署到git样式丢失的问题需要修改hexo的_config.yml</li>\n</ul>\n<pre><code class=\"language-js\"> url:  网站的url  \n root: /项目名\n</code></pre>\n<ul>\n<li>如果使用markdown 10 来编辑文章会出现 notitle的问题,我换了编辑器</li>\n</ul>\n<h5>hexo提交新增文章到git</h5>\n<pre><code class=\"language-shell\">hexo g  \nhexo d\n</code></pre>\n<h5>hexo 图片</h5>\n<p>将图片放到public/img/ 文件下下面，然后</p>\n<pre><code class=\"language-js\">使用项目路径+<span class=\"hljs-regexp\">/img/</span>[文件名]\n</code></pre>\n<p>引入命令</p>\n<pre><code class=\"language-shell\">![](图片url)\n</code></pre>\n<p>example<br>\n<img src=\"https://xly2018.github.io/long/img/lm.jpg\" alt=\"\"></p>\n<h5>结尾语</h5>\n<p>刚刚起步,还有诸多需要学习的地方,还望各位看官海涵！</p>\n",
+  "link": "\\zh-cn\\blog\\博客搭建.html",
+  "meta": {
+    "title": "Hexo+码云+git搭建个人博客",
+    "date": "2018-08-22",
+    "tags": "",
+    "- hexo": "",
+    "- 码云": "",
+    "- 博客": ""
+  }
+}
