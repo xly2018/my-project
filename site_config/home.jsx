@@ -3,8 +3,8 @@ import React from 'react';
 export default {
   'zh-cn': {
     brand: {
-      brandName: '开源产品品牌名称',
-      briefIntroduction: '关于开源产品的简单介绍',
+      brandName: '呼呼家园',
+      briefIntroduction: '教育平台APP解决方案',
       buttons: [
         {
           text: '立即开始',
@@ -13,14 +13,14 @@ export default {
         },
         {
           text: '查看Github',
-          link: '',
+          link: 'https://github.com/xly2018/hhpt',
           type: 'normal',
         },
       ],
     },
     introduction: {
-      title: '开源产品的介绍',
-      desc: '开源产品的简单介绍，提供一些该产品的优点、特性描述等',
+      title: '呼呼家园介绍',
+      desc: '教育平台APP解决方案',
       img: '/img/architecture.png',
     },
     features: {
@@ -28,18 +28,20 @@ export default {
       list: [
         {
           img: '/img/feature_transpart.png',
-          title: '特性1',
-          content: '特性1的简单概括',
+          title: '呼呼APP的优势',
+          content: '家校沟通',
         },
         {
           img: '/img/feature_loadbalances.png',
-          title: '特性2',
-          content: '特性2的简单概括',
+          title: '呼呼APP的核心理念',
+          content: '公共平台',
         },
         {
           img: '/img/feature_service.png',
-          title: '特性3',
-          content: '特性3的简单概括',
+          title: '呼呼APP产品的特征',
+          content: '本项目软件主要功用系数整合校园圈及班级圈，以达到全\n' +
+              '校信息、重大活动、全校通报、校园文化、班级内部活\n' +
+              '动课程照片、公告、趣闻趣事等展现',
         },
         {
           img: '/img/feature_hogh.png',
